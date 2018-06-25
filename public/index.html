@@ -54,17 +54,18 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-
+      const room = 'javascript';
       const socket = io('/tech');
       $('form').submit(() => {
-        socket.emit('message', $('#m').val());
+        let msg = $('#m').val();
+        socket.emit('message', { msg, room });
         $('#m').val('');
         return false;
       });
 
       socket.on('connect', () => {
         // emiting to everybody
-        socket.emit('message', 'user connected');
+        socket.emit('join', { room: room });
       });
 
       socket.on('message', (msg) => {
